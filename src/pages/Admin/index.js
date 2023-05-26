@@ -1,0 +1,7 @@
+export {default as ALayout} from './ALayout'
+export {default as Dashboard} from './Dashboard'
+export {default as Commission} from './Commission'
+export {default as Domaine} from './Domaine'
+export {default as EntiteGestionnaire} from './EntiteGestionnaire'
+export {default as Mention} from './Mention'
+export {default as Specialite} from './Specialite'

@@ -1,0 +1,21 @@
+.bg-admin-image{
+    background-image: url(../images/bg-admin-image.png);
+    background-color: white;
+    margin-top: 7vh;
+}
+
+.bg-image {
+  background-image: url('../images/pattern.png');
+  background-size: cover;
+  background-position: center;
+}
+
+/* .page-content{
+   padding-top: 0vh !important;
+}  */
+@media (min-width: 1200px) {
+    body[data-layout="horizontal"] .container-fluid,
+    body[data-layout="horizontal"] .navbar-header {
+      max-width: 95% !important;
+    }
+  }
