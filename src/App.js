@@ -10,9 +10,7 @@ function App() {
       <Routes>
 
         <Route path='/*' element={
-          <AuthGuard>
             <AdminRoute />
-          </AuthGuard>
         } />
 
         <Route path='/auth/*' element={<AuthRoute />} />

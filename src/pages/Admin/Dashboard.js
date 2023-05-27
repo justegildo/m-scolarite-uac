@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 const Dashboard = () => {
     return (
@@ -11,47 +12,47 @@ const Dashboard = () => {
                             <ul className="navbar-nav">
 
                                 <li className="nav-item">
-                                    <a className="nav-link  arrow-none  text-white" href="/dashboard" id="topnav-dashboard" role="button"
+                                    <Link className="nav-link  arrow-none  text-white" to="/dashboard" id="topnav-dashboard" role="button"
                                     >
                                         <i className="bx bx-home-circle me-1"></i><span key="t-dashboards">Tableau de bord</span>
-                                    </a>
+                                    </Link>
 
                                 </li>
                                 <li className="nav-item ">
-                                    <a className="nav-link arrow-none text-white" href="/commission" id="topnav-uielement" role="button">
+                                    <Link className="nav-link arrow-none text-white" to="/commission" id="topnav-uielement" role="button">
                                         <i className="fa fa-list me-1"></i>
                                         <span key="t-ui-elements"> Commission</span>
-                                    </a>
+                                    </Link>
                                 </li>
                                 <li className="nav-item ">
-                                    <a className="nav-link arrow-none text-white" href="/domaine" id="topnav-uielement" role="button">
+                                    <Link className="nav-link arrow-none text-white" to="/domaine" id="topnav-uielement" role="button">
                                         <i className="fa fa-list me-1"></i>
                                         <span key="t-ui-elements"> Domaine</span>
-                                    </a>
+                                    </Link>
                                 </li>
                                 <li className="nav-item ">
-                                    <a className="nav-link arrow-none text-white" href="/entite-gestionnaire" id="topnav-uielement" role="button">
+                                    <Link className="nav-link arrow-none text-white" to="/entite-gestionnaire" id="topnav-uielement" role="button">
                                         <i className="fa fa-list me-1"></i>
                                         <span key="t-ui-elements"> Entité gestionnaire</span>
-                                    </a>
+                                    </Link>
                                 </li>
                                 <li className="nav-item ">
-                                    <a className="nav-link arrow-none text-white" href="/mention" id="topnav-uielement" role="button">
+                                    <Link className="nav-link arrow-none text-white" to="/mention" id="topnav-uielement" role="button">
                                         <i className="fa fa-list me-1"></i>
                                         <span key="t-ui-elements">Mention</span>
-                                    </a>
+                                    </Link>
                                 </li>
                                 <li className="nav-item ">
-                                    <a className="nav-link arrow-none text-white" href="/specialite" id="topnav-uielement" role="button">
+                                    <Link className="nav-link arrow-none text-white" to="/specialite" id="topnav-uielement" role="button">
                                         <i className="fa fa-list me-1"></i>
                                         <span key="t-ui-elements">Spécialité</span>
-                                    </a>
+                                    </Link>
                                 </li>
                                 <li className="nav-item ">
-                                    <a className="nav-link arrow-none text-white" href="espace-entite-bilan.html" id="topnav-uielement" role="button">
+                                    <Link className="nav-link arrow-none text-white" to="espace-entite-bilan.html" id="topnav-uielement" role="button">
                                         <i className="fa fa-list me-1"></i>
                                         <span key="t-ui-elements">Bilan</span>
-                                    </a>
+                                    </Link>
                                 </li>
 
                                 <li className="nav-item dropdown">
