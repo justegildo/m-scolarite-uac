@@ -21,7 +21,7 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
     '& .MuiDialogActions-root': {
         padding: theme.spacing(1),
     },
-})); 
+}));
 
 
 function BootstrapDialogTitle(props) {
@@ -53,15 +53,26 @@ BootstrapDialogTitle.propTypes = {
     onClose: PropTypes.func.isRequired,
 };
 
-
 const Commission = () => {
+    const [yesNo, setYesNo] = useState({});
+    const [form, setForm] = useState({});
 
+    return (
+        <div>
+            <div className="card">
+                <Table {...{ setForm, setYesNo }} />
+                <Form {...{ form, setYesNo }} />
+                <Confirmation {...yesNo} />
+            </div>
+
+        </div>
+    );
+}
+
+const Table = (props) => {
+    const {setForm, setYesNo} = props;
     const [items, setItems] = useState([]);
-    const [selectedItem, setSelectedItem] = useState(null);
     const flag = useRef();
-
-    const [open, setOpen] = useState(false); 
-    const [openConfirm, setOpenConfirm] = useState(false);
     const [searching, setSearching] = useState("");
 
     const loadItems = () => {
@@ -78,186 +89,35 @@ const Commission = () => {
             loadItems()
         }
         return () => flag.current = true
-        
+
     }, [])
 
-    const handleClickOpenForm = () => {
-        setOpen(true);
-    };
 
-    const confirmClick = () =>{
-        setOpenConfirm(true)
+    const openNew = () =>{
+        setForm({
+            visible: true,
+            hide: ()=> setForm((prev)=>({...prev, visible: false})),
+            data: null,
+            setData: (data)=> setForm((prev)=>({...prev, data}))
+        });
     }
 
-    const handleClose = () => {
-        setSelectedItem(null);
-        setOpen(false);
-        setOpenConfirm(false);
-    };
-
-    const [data, setData] = useState({
-        code: '',
-        libelle: '',
-        date_creation: '',
-        responsable: '',
-        rapporteur: ''
-    });
-
-    const onChange = (e) => {
-        setData({
-            ...data,
-            [e.target.name]: e.target.value,
-
+    const editItem = (item) => {
+        setForm({
+            visible: true,
         })
     }
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        console.log(data);
-        setOpenConfirm(true);
-        
-        CommisionService.addCommission(data)
-            .then(response => {
-                console.log(response);
-                loadItems();
-                setOpen(false)
-                setOpenConfirm(false);
-
-            })
-            .catch(error => {
-                console.log(error);
-                setOpen(false);
-                setOpenConfirm(false);
-            }) 
-    }
-
-
-    const editItem = (item) => {
-        console.log(item);
-        setSelectedItem(item);
-        //setData(selectedItem)
-        setOpen(true);
-        const updatedData = {
-            id: item.id,
-            code: item.code,
-            libelle: item.libelle,
-            date_creation: item.date_creation,
-            responsable: item.responsable,
-            rapporteur: item.rapporteur
-        }
-        CommisionService.updateCommission(updatedData)
-            .then(response => {
-                console.log(response);
-                loadItems()
-                setOpen(false)
-            })
-            .catch(error => {
-                console.log(error);
-                setOpen(false);
-            });
-    }
-
     const deleteItem = (item) => {
-        console.log(item);
-        CommisionService.deleteCommission(item)
-            .then(response => {
-                console.log(response)
-                loadItems()
-                setItems((current) => current.filter(item => item.id !== item))
-            })
-            .catch(error => console.log(error))
-    }
 
-    console.log(searching);
+        console.log(item);
+        setYesNo({
+            visible: true,
+        })
+    }
 
     return (
         <div className="main-content">
-            <div>
-                <BootstrapDialog
-                    onClose={handleClose}
-                    aria-labelledby="customized-dialog-title"
-                    open={open}
-                    maxWidth="lg"
-                >
-                    <BootstrapDialogTitle id="customized-dialog-title" onClose={handleClose}>
-                        Création d'un domaine
-                    </BootstrapDialogTitle>
-                    <form className=""  onSubmit={handleSubmit}>
-                        <DialogContent dividers>
-
-
-                            <div className="form-group">
-                                <label htmlFor='code' className="form-label">Code</label>
-                                <input id='code' type='text' className="form-control"
-                                    name='code' onChange={onChange}
-                                    value={data && data?.code} required />
-                            </div>
-                            <div className="form-group">
-                                <label htmlFor='libelle' className="form-label">Libellé</label>
-                                <input id='libelle' type='text' className="form-control"
-                                    name='libelle' onChange={onChange}
-                                    value={data && data?.libelle} required />
-                            </div>
-                            <div className="form-group">
-                                <label htmlFor='date_creation' className="form-label">Date création</label>
-                                <input id='date_creation' type='date' className="form-control"
-                                    name='date_creation' onChange={onChange}
-                                    value={data && data?.date_creation} required />
-                            </div>
-                            <div className="form-group">
-                                <label htmlFor='responsable' className="form-label">Responsable</label>
-                                <input id='responsable' type='text' className="form-control"
-                                    name='responsable' onChange={onChange}
-                                    value={data && data?.responsable} required />
-                            </div>
-                            <div className="form-group">
-                                <label htmlFor='rapporteur' className="form-label">Rapporteur</label>
-                                <input id='rapporteur' type='text' className="form-control"
-                                    name='rapporteur' onChange={onChange}
-                                    value={data && data?.rapporteur} required />
-                            </div>
-
-                        </DialogContent>
-                        <DialogActions>
-                            <button autoFocus onClick={handleClose}>
-                                Fermer
-                            </button>
-                            <button autoFocus type='submit'>
-                                Valider
-                            </button>
-                        </DialogActions>
-                    </form>
-                </BootstrapDialog>
-            </div>
-
-
-            <div>
-                <BootstrapDialog
-                    onClose={handleClose}
-                    aria-labelledby="customized-dialog-title"
-                    open={openConfirm}
-                    maxWidth="lg"
-                >
-                    <BootstrapDialogTitle id="customized-dialog-title" onClose={handleClose}>
-                        Confirmation
-                    </BootstrapDialogTitle>
-                    <DialogContent>
-                        <DialogContentText>
-                            Confirmez-vous la suppression ?
-                        </DialogContentText>
-                    </DialogContent>
-                    <DialogActions>
-                        <button className='btn btn-primary' autoFocus onClick={handleClose}>
-                            Non
-                        </button>
-                        <button className='btn btn-secondary' autoFocus onClick={handleSubmit} >
-                            Oui
-                        </button>
-                    </DialogActions>
-
-                </BootstrapDialog>
-            </div>
-
             <div className="page-content">
                 <div className="container-fluid">
                     {/* <!-- start page title --> */}
@@ -316,7 +176,7 @@ const Commission = () => {
 
                                                     </div>
                                                     <div className="col-lg-6  col-sm-6 ">
-                                                        <button className="btn btn-success btn-rounded waves-effect waves-light me-2" onClick={handleClickOpenForm}>
+                                                        <button className="btn btn-success btn-rounded waves-effect waves-light me-2" onClick={openNew}>
                                                             <i className="mdi mdi-plus me-1"></i> Ajouter</button>
                                                     </div>
                                                 </div>
@@ -387,9 +247,156 @@ const Commission = () => {
             </div>
 
         </div>
-    );
-};
+    )
+
+}
+
+const Form = (props) => {
+    const {visible, hide, data, setData } = props.form;
+    const {setYesNo} = props;
+
+    const [selectedItem, setSelectedItem] = useState(null);
+
+    const [open, setOpen] = useState(false);
+
+    const onChange = (e) => {
+        setData({
+            ...data,
+            [e.target.name]: e.target.value,
+
+        })
+    }
+
+    const handleClickOpen = () => {
+        setOpen(true);
+    };
+
+    const handleClose = () => {
+        setSelectedItem(null);
+        setOpen(false);
+    };
+
+    /* const [data, setData] = useState({
+        code: '',
+        libelle: '',
+        date_creation: '',
+        responsable: '',
+        rapporteur: ''
+    }); */
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        setYesNo({
+            visible: true,
+            message : data.id ? "Confirmez-vous la modification ?" : "Confirmez-vous l'ajout ?",
+            hide: ()=> setYesNo((prev)=>({...prev, visible: false}))
+        })
+       
+    }
 
 
+
+    return (
+        <div>
+            <BootstrapDialog
+                onClose={handleClose}
+                aria-labelledby="customized-dialog-title"
+                open={open}
+                maxWidth="lg"
+            >
+                <BootstrapDialogTitle id="customized-dialog-title" onClose={handleClose}>
+                    Création d'un domaine
+                </BootstrapDialogTitle>
+                <form className="" onSubmit={handleSubmit}>
+                    <DialogContent dividers>
+
+
+                        <div className="form-group">
+                            <label htmlFor='code' className="form-label">Code</label>
+                            <input id='code' type='text' className="form-control"
+                                name='code' onChange={onChange}
+                                value={data && data?.code} required />
+                        </div>
+                        <div className="form-group">
+                            <label htmlFor='libelle' className="form-label">Libellé</label>
+                            <input id='libelle' type='text' className="form-control"
+                                name='libelle' onChange={onChange}
+                                value={data && data?.libelle} required />
+                        </div>
+                        <div className="form-group">
+                            <label htmlFor='date_creation' className="form-label">Date création</label>
+                            <input id='date_creation' type='date' className="form-control"
+                                name='date_creation' onChange={onChange}
+                                value={data && data?.date_creation} required />
+                        </div>
+                        <div className="form-group">
+                            <label htmlFor='responsable' className="form-label">Responsable</label>
+                            <input id='responsable' type='text' className="form-control"
+                                name='responsable' onChange={onChange}
+                                value={data && data?.responsable} required />
+                        </div>
+                        <div className="form-group">
+                            <label htmlFor='rapporteur' className="form-label">Rapporteur</label>
+                            <input id='rapporteur' type='text' className="form-control"
+                                name='rapporteur' onChange={onChange}
+                                value={data && data?.rapporteur} required />
+                        </div>
+
+                    </DialogContent>
+                    <DialogActions>
+                        <button autoFocus onClick={handleClose}>
+                            Fermer
+                        </button>
+                        <button autoFocus type='submit'>
+                            Valider
+                        </button>
+                    </DialogActions>
+                </form>
+            </BootstrapDialog>
+        </div>
+    )
+}
+
+const Confirmation = (props) =>{
+    const {visible, hide, message, callback } = props;
+    const [open, setOpen] = useState(false);
+
+    const handleClickOpen = () => {
+        setOpen(true);
+    };
+
+    const handleClose = () => {
+        setOpen(false);
+    };
+    return(
+        <div>
+            <BootstrapDialog
+                    onClose={handleClose}
+                    aria-labelledby="customized-dialog-title"
+                    open={open}
+                    maxWidth="lg"
+                >
+                    <BootstrapDialogTitle id="customized-dialog-title" onClose={handleClose}>
+                        Confirmation
+                    </BootstrapDialogTitle>
+                    <DialogContent>
+                        <DialogContentText>
+                            {message != null ? message : "Voulez-vous continuer ?"} 
+                        </DialogContentText>
+                    </DialogContent>
+                    <DialogActions>
+                        <button autoFocus onClick={handleClose}>
+                            Non
+                        </button>
+                        <button autoFocus >
+                            Oui
+                        </button>
+                    </DialogActions>
+
+                </BootstrapDialog>
+
+        </div>
+    )
+}
 
 export default Commission;
